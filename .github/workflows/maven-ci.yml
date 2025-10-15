@@ -14,5 +14,5 @@ jobs:
          distribution: temurin
          java-version: '25'
          cache: maven
-         -name: Build & Test
-         run: mvn clean test
+      - name: Build & Test
+        run: mvn clean test
