@@ -1,11 +1,13 @@
 package ie.atu.cicd_lab3_week5.service;
 
 import ie.atu.cicd_lab3_week5.model.Passenger;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PassengerService {
     private final List<Passenger> store = new ArrayList<>();
 
