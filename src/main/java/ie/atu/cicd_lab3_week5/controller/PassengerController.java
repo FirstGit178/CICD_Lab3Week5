@@ -3,9 +3,11 @@ package ie.atu.cicd_lab3_week5.controller;
 
 import ie.atu.cicd_lab3_week5.model.Passenger;
 import ie.atu.cicd_lab3_week5.service.PassengerService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +32,14 @@ public class PassengerController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
-        @PostMapping
-                public ResponseEntity
     }
-}
+
+    @PostMapping
+    public ResponseEntity<Passenger> create(@Valid @RequestBody Passenger p) {
+      Passenger created = service.create(p);
+      return ResponseEntity
+                    .created(URI.create("/api/passengers/" + created.getPassengerId()))
+                    .body(created);
+        }
+    }
+
