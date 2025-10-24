@@ -15,7 +15,7 @@ public class PassengerService {
         return new ArrayList<>(store);  //defensive copy
 
     }
-
+    // Find Passenger by ID
     public Optional<Passenger> findById(String id) {
         for (Passenger p : store) {
             if (p.getPassengerId().equals(id)) {
@@ -26,6 +26,7 @@ public class PassengerService {
 
     }
 
+    // Create Passenger
     public Passenger create(Passenger p) {
         if (findById(p.getPassengerId()).isPresent()) {
             throw new IllegalArgumentException("passengerId already exists");
@@ -45,8 +46,17 @@ public class PassengerService {
                 return p;
             }
             throw new Exception();
-
     }
+
+        // Delete Passenger
+        public Passenger deletePassenger(Passenger passengerFound) {
+            if (findById(passengerFound.getPassengerId()).isPresent()){
+                store.remove(passengerFound);
+                return passengerFound;
+            }
+            throw new IllegalArgumentException();
+        }
+
 }
 
 
