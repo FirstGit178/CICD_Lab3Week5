@@ -33,4 +33,21 @@ public class PassengerService {
         store.add(p);
         return p;
     }
+
+
+        // Update Passenger
+        public Passenger update(Passenger p) throws Exception {
+            Optional<Passenger> passengerFound = findById(p.getPassengerId());
+            if(passengerFound.isPresent()){
+                Passenger updated = passengerFound.get();
+                updated.setName(p.getName());
+                updated.setEmail(p.getEmail());
+                return p;
+            }
+            throw new Exception();
+
+    }
 }
+
+
+

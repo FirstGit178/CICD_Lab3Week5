@@ -15,15 +15,20 @@ import java.util.Optional;
 @RequestMapping("/api/passengers")
 public class PassengerController {
 
+    // Constructor Based Dependency Injection
     private final PassengerService service;             //constructor DI
 
     public PassengerController(PassengerService service) {
         this.service = service;
     }
 
+    //get request for a list of all passengers
     @GetMapping
-    public ResponseEntity<List<Passenger>> getAll() { return ResponseEntity.ok(service.findAll()); }
+    public ResponseEntity<List<Passenger>> getAll() {
+        return ResponseEntity.ok(service.findAll());
+    }
 
+    // get request for id of passenger
     @GetMapping("/{id}")
     public ResponseEntity<Passenger> getOne(@PathVariable String id) {
         Optional<Passenger> maybe = service.findById(id);
@@ -34,12 +39,30 @@ public class PassengerController {
         }
     }
 
+    // post request to create new passenger
     @PostMapping
     public ResponseEntity<Passenger> create(@Valid @RequestBody Passenger p) {
-      Passenger created = service.create(p);
-      return ResponseEntity
-                    .created(URI.create("/api/passengers/" + created.getPassengerId()))
-                    .body(created);
-        }
+        Passenger created = service.create(p);
+        return ResponseEntity
+                .created(URI.create("/api/passengers/" + created.getPassengerId()))
+                .body(created);
     }
+
+    // put request to update passengers details
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Passenger>> updatePassenger(@Valid @RequestBody Passenger update, @PathVariable String id)
+            throws Exception {
+        update.setPassengerId(id);
+        Optional<Passenger> passengerFound = service.findById(id);
+
+        if (passengerFound.isPresent()) {
+            Passenger passengerUpdated = service.update(update);
+            return ResponseEntity.ok(passengerFound);     // Passenger update success
+        } else {
+            return ResponseEntity.notFound().build();   // Passenger not found
+        }
+
+    }
+
+}
 
