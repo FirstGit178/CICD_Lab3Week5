@@ -39,7 +39,7 @@ public class PassengerController {
         }
     }
 
-    // post request to create new passenger
+    // post method to create new passenger
     @PostMapping
     public ResponseEntity<Passenger> create(@Valid @RequestBody Passenger p) {
         Passenger created = service.create(p);
@@ -48,10 +48,10 @@ public class PassengerController {
                 .body(created);
     }
 
-    // put request to update passengers details
+    // put method to update passengers details
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Passenger>> updatePassenger(@Valid @RequestBody Passenger update, @PathVariable String id)
-            throws Exception {
+               throws Exception {
         update.setPassengerId(id);
         Optional<Passenger> passengerFound = service.findById(id);
 
@@ -64,5 +64,19 @@ public class PassengerController {
 
     }
 
+    // delete method to delete passenger details
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Passenger> deletePassenger(@PathVariable String id) {
+        service.findById(id);
+        Optional<Passenger> passengerFound = service.findById(id);
+
+        if(passengerFound.isPresent()) {
+            Passenger passengerDeleted = service.deletePassenger(passengerFound.get());
+            return ResponseEntity.ok(passengerDeleted);      // Passenger deleted success
+        }
+        else{
+            return ResponseEntity.notFound().build();       // passenger not found
+        }
+    }
 }
 
